@@ -7,7 +7,6 @@ from rest_framework.response import Response
 
 from challenge import models
 from challenge import serializers
-from challenge.permissions import IsOwner
 
 
 class CreateURI(generics.CreateAPIView):
