@@ -9,12 +9,12 @@ urlpatterns = [
 
     path('create_uri/', views.CreateURI.as_view()),
 
-    path('<slug:slug>/movies/', views.MoviesListView.as_view()),
-    path('<slug:slug>/movies/<int:pk>/', views.MoviesDetailView.as_view()),
+    path('uris/<slug:slug>/movies/', views.MoviesListView.as_view()),
+    path('uris/<slug:slug>/movies/<int:pk>/', views.MoviesDetailView.as_view()),
 
-    path('<slug:slug>/books/', views.BooksListView.as_view()),
-    path('<slug:slug>/books/<int:pk>/', views.BooksDetailView.as_view()),
+    path('uris/<slug:slug>/books/', views.BooksListView.as_view()),
+    path('uris/<slug:slug>/books/<int:pk>/', views.BooksDetailView.as_view()),
 
-    path('<slug:slug>/profile/', views.ProfileView.as_view()),
+    path('uris/<slug:slug>/profile/', views.ProfileView.as_view()),
 
 ]
