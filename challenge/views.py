@@ -32,47 +32,47 @@ class CreateURI(generics.CreateAPIView):
 
 
 class ProfileView(generics.RetrieveUpdateAPIView):
-    permission_classes = (IsAuthenticated, IsOwner)
+    permission_classes = (IsAuthenticated,)
     queryset = models.Profile.objects.all()
     serializer_class = serializers.ProfileSerializer
 
     def get_object(self):
         slug = self.kwargs.get('slug')
-        post = get_object_or_404(models.Post, slug=slug)
+        post = get_object_or_404(models.Post, slug=slug, owner=self.request.user)
         return post.profile
 
 
 class MoviesListView(generics.ListCreateAPIView):
-    permission_classes = (IsAuthenticated, IsOwner)
+    permission_classes = (IsAuthenticated,)
     serializer_class = serializers.MovieSerializer
 
     def get_queryset(self):
-        post = get_object_or_404(models.Post, slug=self.kwargs.get('slug'))
+        post = get_object_or_404(models.Post, slug=self.kwargs.get('slug'), owner=self.request.user)
         return post.movies.all()
 
 
 class MoviesDetailView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated, IsOwner)
+    permission_classes = (IsAuthenticated,)
     serializer_class = serializers.MovieSerializer
 
     def get_queryset(self):
-        post = get_object_or_404(models.Post, slug=self.kwargs.get('slug'))
+        post = get_object_or_404(models.Post, slug=self.kwargs.get('slug'), owner=self.request.user)
         return post.movies.all()
 
 
 class BooksListView(generics.ListCreateAPIView):
-    permission_classes = (IsAuthenticated, IsOwner)
+    permission_classes = (IsAuthenticated,)
     serializer_class = serializers.BookSerializer
 
     def get_queryset(self):
-        post = get_object_or_404(models.Post, slug=self.kwargs.get('slug'))
+        post = get_object_or_404(models.Post, slug=self.kwargs.get('slug'), owner=self.request.user)
         return post.books.all()
 
 
 class BooksDetailView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated, IsOwner)
+    permission_classes = (IsAuthenticated,)
     serializer_class = serializers.BookSerializer
 
     def get_queryset(self):
-        post = get_object_or_404(models.Post, slug=self.kwargs.get('slug'))
+        post = get_object_or_404(models.Post, slug=self.kwargs.get('slug'), owner=self.request.user)
         return post.books.all()
