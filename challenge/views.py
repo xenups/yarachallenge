@@ -7,11 +7,13 @@ from rest_framework.response import Response
 
 from challenge import models
 from challenge import serializers
+from challenge.permissions import IsOwner
 
 
 class CreateURI(generics.CreateAPIView):
     queryset = models.Post.objects.all()
     serializer_class = serializers.PostSerializer
+    permission_classes = (IsAuthenticated,)
 
     @staticmethod
     def __generate_slug():
@@ -26,11 +28,11 @@ class CreateURI(generics.CreateAPIView):
         return Response(({'uri': generated_slug}), status=status.HTTP_201_CREATED, headers=headers)
 
     def perform_create(self, serializer, slug):
-        serializer.save(slug=slug)
+        serializer.save(slug=slug, owner=self.request.user)
 
 
 class ProfileView(generics.RetrieveUpdateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOwner)
     queryset = models.Profile.objects.all()
     serializer_class = serializers.ProfileSerializer
 
@@ -41,7 +43,7 @@ class ProfileView(generics.RetrieveUpdateAPIView):
 
 
 class MoviesListView(generics.ListCreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOwner)
     serializer_class = serializers.MovieSerializer
 
     def get_queryset(self):
@@ -50,7 +52,7 @@ class MoviesListView(generics.ListCreateAPIView):
 
 
 class MoviesDetailView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOwner)
     serializer_class = serializers.MovieSerializer
 
     def get_queryset(self):
@@ -59,7 +61,7 @@ class MoviesDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class BooksListView(generics.ListCreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOwner)
     serializer_class = serializers.BookSerializer
 
     def get_queryset(self):
@@ -68,7 +70,7 @@ class BooksListView(generics.ListCreateAPIView):
 
 
 class BooksDetailView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOwner)
     serializer_class = serializers.BookSerializer
 
     def get_queryset(self):
